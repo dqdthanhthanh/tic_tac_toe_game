@@ -103,61 +103,29 @@ func check_win() -> int:
 		if !x in [0,map_size-1]:
 			if ((board[y][x-1] == team_select and board[y][x+1] == team_select) and
 			(board[y][x-2] == 0 and board[y][x+2] == 0)):
-				prints("Center")
+				prints("Check Horizontal")
 				return team_select
-		elif !x in [0,1,map_size-2,map_size-1]:
-			if board[y][x-1] == team_select:
-				prints("Left")
-				count = 0
-				for i in 3:
-					if board[y][x-i] == team_select:
-						count += 1
-						if count == 3 and board[y][x-4] == 0:
-							return team_select
-					else:
-						count = 0
-			elif board[y][x+1] == team_select:
-				prints("Right")
-				count = 0
-				for i in 3:
-					if board[y][x+i] == team_select:
-						count += 1
-						if count == 3 and board[y][x+4] == 0:
-							return team_select
-					else:
-						count = 0
 		# Kiểm tra các cột
 		if !y in [0,map_size-1]:
 			if ((board[y-1][x] == team_select and board[y+1][x] == team_select) and
 			(board[y-2][x] == 0 and board[y+2][x] == 0)):
-				prints("Center")
+				prints("Check Vertical")
 				return team_select
-		elif !y in [0,1,map_size-2,map_size-1]:
-			if board[y-1][x] == team_select:
-				prints("Up")
-				count = 0
-				for i in 3:
-					if board[y-i][x] == team_select and board[y-4][x] == 0:
-						count += 1
-						if count == 3:
-							return team_select
-					else:
-						count = 0
-			elif board[y+1][x] == team_select:
-				prints("Down")
-				count = 0
-				for i in 3:
-					if board[y+i][x] == team_select and board[y+4][x] == 0:
-						count += 1
-						if count == 3:
-							return team_select
-					else:
-						count = 0
 		# Kiểm tra các đường chéo
-		# Các đường chéo trên
-		
-		# Các đường chéo dưới
-	
+		# Các đường chéo giữa
+		if !x in [0,map_size-1] and !y in [0,map_size-1]:
+			prints("Check Diagonal")
+			# Đường chéo trái-phải
+			if ((board[y-1][x-1] == team_select and board[y+1][x+1] == team_select) and
+			(board[y-2][x-2] == 0 and board[y+2][x+2] == 0)):
+				prints("Left Diagonal")
+				return team_select
+			# Đường chéo phải-trái
+			if ((board[y-1][x+1] == team_select and board[y+1][x-1] == team_select) and
+			(board[y-2][x+2] == 0 and board[y+2][x-2] == 0)):
+				prints("Right Diagonal")
+				return team_select
+	return 0
 	# Kiểm tra các hàng
 	#for i in board.size():
 		#count = 0
@@ -182,24 +150,6 @@ func check_win() -> int:
 					#prints("check",count,j,i)
 					#return team_select
 	#count = 0
-	
-	## Kiểm tra hàng và cột
-	#for i in range(map_size):
-		#if board[i][0] != 0 and board[i][0] == board[i][1] and board[i][0] == board[i][2]:
-			#return board[i][0] # Trả về giá trị của ô thắng
-		#if board[0][i] != 0 and board[0][i] == board[1][i] and board[0][i] == board[2][i]:
-			#return board[0][i] # Trả về giá trị của ô thắng
-	#
-	## Kiểm tra đường chéo chính
-	#if board[0][0] != 0 and board[0][0] == board[1][1] and board[0][0] == board[2][2]:
-		#return board[0][0] # Trả về giá trị của ô thắng
-	#
-	## Kiểm tra đường chéo phụ
-	#if board[0][2] != 0 and board[0][2] == board[1][1] and board[0][2] == board[2][0]:
-		#return board[0][2] # Trả về giá trị của ô thắng
-	#
-	# Nếu không có ô nào thắng
-	return 0
 
 func on_game_end(team_win:int = 1):
 	if team_win == 1:
