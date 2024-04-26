@@ -16,7 +16,7 @@ extends Control
 @export var data:Node
 
 var team_select:int = 1
-var map_size:int = 5
+var map_size:int = 10
 # lua tru toa do, vi tri cua cac diem pixel
 var board:Array
 # lua tru cac diem pixel
@@ -60,6 +60,8 @@ func _input(event):
 			and event.position.y > pixel_y[0] and event.position.y < pixel_y[1]):
 				prints("event.position",event.position)
 				add_marker(event.position)
+	if Input.is_key_label_pressed(KEY_ESCAPE):
+		prints("check_win",check_win())
 
 func add_marker(pos):
 	var x:int = (pos.x)/64
@@ -78,7 +80,6 @@ func add_marker(pos):
 			change_team()
 		else:
 			on_game_end(check_win())
-	prints("check_win",check_win())
 
 func change_team():
 	if team_select == 1:
@@ -93,7 +94,7 @@ func check_win() -> int:
 		for j in board[i].size():
 			if board[i][j] == team_select:
 				markers.append([j,i])
-	prints("markers",markers)
+	prints("markers",markers, team_select)
 	
 	for n in markers.size():
 		var marker = markers[n]
@@ -101,55 +102,121 @@ func check_win() -> int:
 		var y = marker[1]
 		# Kiểm tra các hàng
 		if !x in [0,map_size-1]:
-			if ((board[y][x-1] == team_select and board[y][x+1] == team_select) and
-			(board[y][x-2] == 0 and board[y][x+2] == 0)):
-				prints("Check Horizontal")
-				return team_select
+			if board[y][x-1] == team_select and board[y][x+1] == team_select:
+				prints("Check Horizontal", marker)
+				# Kiểm tra có bị chặn ko
+				if x-2 < 0 and x+2 > map_size-1:
+					prints("Map block all", marker)
+					return team_select
+				elif x-2 >= 0 and x+2 > map_size-1:
+					prints("Map block left", marker)
+					if board[y][x-2] == 0 or board[y][x-2] == team_select:
+						return team_select
+				elif x-2 < 0 and x+2 <= map_size-1:
+					prints("Map block right", marker)
+					if board[y][x+2] == 0 or board[y][x+2] == team_select:
+						return team_select
+				elif x-2 >= 0 and x+2 <= map_size-1:
+					prints("Map no block", marker)
+					if board[y][x-2] == 0 and board[y][x+2] == 0:
+						return team_select
+					elif board[y][x-2] != 0:
+						prints("Check left", marker)
+						if board[y][x+2] == team_select:
+							return team_select
+					elif board[y][x+2] != 0:
+						prints("Check right", marker)
+						if board[y][x-2] == team_select:
+							return team_select
 		# Kiểm tra các cột
 		if !y in [0,map_size-1]:
-			if ((board[y-1][x] == team_select and board[y+1][x] == team_select) and
-			(board[y-2][x] == 0 and board[y+2][x] == 0)):
-				prints("Check Vertical")
-				return team_select
+			if board[y-1][x] == team_select and board[y+1][x] == team_select:
+				# Kiểm tra có bị chặn ko
+				prints("Check Vertical", marker)
+				if y-2 < 0 and y+2 > map_size-1:
+					prints("Map block all", marker)
+					return team_select
+				elif y-2 >= 0 and y+2 > map_size-1:
+					prints("Map block left", marker)
+					if board[y-2][x] == 0 or board[y-2][x] == team_select:
+						return team_select
+				elif y-2 < 0 and y+2 <= map_size-1:
+					prints("Map block right", marker)
+					if board[y+2][x] == 0 or board[y+2][x] == team_select:
+						return team_select
+				elif y-2 >= 0 and y+2 <= map_size-1:
+					prints("Map no block", marker)
+					if board[y-2][x] == 0 and board[y+2][x] == 0:
+						return team_select
+					if board[y-2][x] != 0:
+						prints("Check left", marker)
+						if board[y+2][x] == team_select:
+							return team_select
+					if board[y+2][x] != 0:
+						prints("Check right", marker)
+						if board[y-2][x] == team_select:
+							return team_select
 		# Kiểm tra các đường chéo
-		# Các đường chéo giữa
 		if !x in [0,map_size-1] and !y in [0,map_size-1]:
 			prints("Check Diagonal")
 			# Đường chéo trái-phải
-			if ((board[y-1][x-1] == team_select and board[y+1][x+1] == team_select) and
-			(board[y-2][x-2] == 0 and board[y+2][x+2] == 0)):
-				prints("Left Diagonal")
-				return team_select
+			if board[y-1][x-1] == team_select and board[y+1][x+1] == team_select:
+				prints("Left Diagonal", marker)
+				# Kiểm tra có bị chặn ko
+				if (y-2<0 and x-2<0) and (y+2>map_size-1 and x+2>map_size-1):
+					prints("Map block all", marker)
+					return team_select
+				elif (y-2>=0 and x-2>=0) and (y+2>map_size-1 and x+2>map_size-1):
+					prints("Map block Left", marker)
+					if board[y-2][x] == 0 or board[y-2][x] == team_select:
+						return team_select
+				elif (y-2<0 and x-2<0) and (y+2<=map_size-1 and x+2<=map_size-1):
+					prints("Map block Right", marker)
+					if board[y+2][x] == 0 or board[y+2][x] == team_select:
+						return team_select
+				elif (y-2>=0 and x-2>=0) and (y+2<=map_size-1 and x+2<=map_size-1):
+					prints("Map no block", marker)
+					if board[y-2][x-2] == 0 and board[y+2][x+2] == 0:
+						prints("Check center", marker)
+						return team_select
+					elif board[y-2][x-2] != 0:
+						prints("Check left", marker)
+						if board[y+2][x+2] == team_select:
+							return team_select
+					elif board[y+2][x+2] != 0:
+						prints("Check right", marker)
+						if board[y-2][x-2] == team_select:
+							return team_select
 			# Đường chéo phải-trái
-			if ((board[y-1][x+1] == team_select and board[y+1][x-1] == team_select) and
-			(board[y-2][x+2] == 0 and board[y+2][x-2] == 0)):
-				prints("Right Diagonal")
-				return team_select
+			if board[y-1][x+1] == team_select and board[y+1][x-1] == team_select:
+				#(board[y-2][x+2] == 0 and board[y+2][x-2] == 0)
+				prints("Right Diagonal", marker)
+				# Kiểm tra có bị chặn ko
+				if (y-2<0 and x+2>map_size-1) and (y+2>map_size-1 and x-2<0):
+					prints("Map block all", marker)
+					return team_select
+				elif (y-2<0 and x+2>map_size-1) and (y+2<=map_size-1 and x-2>=0):
+					prints("Map block Top", marker)
+					if board[y+2][x-2] == 0 or board[y+2][x-2] == team_select:
+						return team_select
+				elif (y-2>=0 and x+2<=map_size-1) and (y+2>map_size-1 and x-2<0):
+					prints("Map block Down", marker)
+					if board[y-2][x+2] == 0 or board[y-2][x+2] == team_select:
+						return team_select
+				elif (y-2>=0 and x+2<=map_size-1) and (y+2<=map_size-1 and x-2>=0):
+					prints("Map no block", marker)
+					if board[y-2][x+2] == 0 and board[y+2][x-2] == 0:
+						prints("Check center", marker)
+						return team_select
+					if board[y-2][x+2] != 0:
+						prints("Check left", marker)
+						if board[y+2][x-2] == team_select:
+							return team_select
+					elif board[y+2][x-2] != 0:
+						prints("Check right", marker)
+						if board[y-2][x+2] == team_select:
+							return team_select
 	return 0
-	# Kiểm tra các hàng
-	#for i in board.size():
-		#count = 0
-		#for j in board[i].size():
-			#if board[i][j] != team_select:
-				#count = 0
-			#else:
-				#count += 1
-				#if count == 3:
-					#prints("check",count,i,j)
-					#return team_select
-	#count = 0
-	# Kiểm tra cac cột
-	#for i in board[0].size():
-		#count = 0
-		#for j in board.size():
-			#if board[j][i] != team_select:
-				#count = 0
-			#else:
-				#count += 1
-				#if count == 3:
-					#prints("check",count,j,i)
-					#return team_select
-	#count = 0
 
 func on_game_end(team_win:int = 1):
 	if team_win == 1:
