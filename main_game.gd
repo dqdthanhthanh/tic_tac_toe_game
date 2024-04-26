@@ -16,6 +16,7 @@ extends Control
 @export var data:Node
 
 var team_select:int = 1
+var map_size:int = 5
 # lua tru toa do, vi tri cua cac diem pixel
 var board:Array
 # lua tru cac diem pixel
@@ -42,27 +43,15 @@ func _ready() -> void:
 			else:
 				pixel.position.x = 32 + j * 64
 				pixel_board[i][j] = pixel
-			#pixel.get_child(0).frame = i
-			#pixel.get_child(1).frame = j
-			pixel.get_child(0).hide()
-			pixel.get_child(1).hide()
+			pixel.get_child(0).frame = i
+			pixel.get_child(1).frame = j
+			#pixel.get_child(0).hide()
+			#pixel.get_child(1).hide()
 			pixel.position.y = 32 + i * 64
-	create_black_screen()
-
-func create_black_screen():
-	# create wall color
-	# ngang
-	var wall_color:Color = Color.BLACK
-	for i in board[0].size():
-		#for j in board.size():
-		for j in [0,1,2,8,9,10]:
-			pixel_board[j][i].modulate = wall_color
-			
-	# doc
-	for i in board.size():
-		#for j in board[0].size():
-		for j in [0,1,2,3,4,5,11,12,13,14,15,16]:
-			pixel_board[i][j].modulate = wall_color
+			if i < map_size and j < map_size:
+				pixel.modulate = Color.WHITE
+			else:
+				pixel.modulate = Color.BLACK
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -85,12 +74,11 @@ func add_marker(pos):
 			marker = marker_x.instantiate()
 		$Marker.add_child(marker)
 		marker.position = node.position
-		if check_win() == false:
+		if check_win() == 0:
 			change_team()
 		else:
-			on_game_end()
-		prints("board")
-		prints(board)
+			on_game_end(check_win())
+	prints("check_win",check_win())
 
 func change_team():
 	if team_select == 1:
@@ -98,8 +86,123 @@ func change_team():
 	else:
 		team_select = 1
 
-func check_win() -> bool:
-	return false
+func check_win() -> int:
+	var count = 0
+	var markers:Array
+	for i in board.size():
+		for j in board[i].size():
+			if board[i][j] == team_select:
+				markers.append([j,i])
+	prints("markers",markers)
+	
+	for n in markers.size():
+		var marker = markers[n]
+		var x = marker[0]
+		var y = marker[1]
+		# Kiểm tra các hàng
+		if !x in [0,map_size-1]:
+			if ((board[y][x-1] == team_select and board[y][x+1] == team_select) and
+			(board[y][x-2] == 0 and board[y][x+2] == 0)):
+				prints("Center")
+				return team_select
+		elif !x in [0,1,map_size-2,map_size-1]:
+			if board[y][x-1] == team_select:
+				prints("Left")
+				count = 0
+				for i in 3:
+					if board[y][x-i] == team_select:
+						count += 1
+						if count == 3 and board[y][x-4] == 0:
+							return team_select
+					else:
+						count = 0
+			elif board[y][x+1] == team_select:
+				prints("Right")
+				count = 0
+				for i in 3:
+					if board[y][x+i] == team_select:
+						count += 1
+						if count == 3 and board[y][x+4] == 0:
+							return team_select
+					else:
+						count = 0
+		# Kiểm tra các cột
+		if !y in [0,map_size-1]:
+			if ((board[y-1][x] == team_select and board[y+1][x] == team_select) and
+			(board[y-2][x] == 0 and board[y+2][x] == 0)):
+				prints("Center")
+				return team_select
+		elif !y in [0,1,map_size-2,map_size-1]:
+			if board[y-1][x] == team_select:
+				prints("Up")
+				count = 0
+				for i in 3:
+					if board[y-i][x] == team_select and board[y-4][x] == 0:
+						count += 1
+						if count == 3:
+							return team_select
+					else:
+						count = 0
+			elif board[y+1][x] == team_select:
+				prints("Down")
+				count = 0
+				for i in 3:
+					if board[y+i][x] == team_select and board[y+4][x] == 0:
+						count += 1
+						if count == 3:
+							return team_select
+					else:
+						count = 0
+		# Kiểm tra các đường chéo
+		# Các đường chéo trên
+		
+		# Các đường chéo dưới
+	
+	# Kiểm tra các hàng
+	#for i in board.size():
+		#count = 0
+		#for j in board[i].size():
+			#if board[i][j] != team_select:
+				#count = 0
+			#else:
+				#count += 1
+				#if count == 3:
+					#prints("check",count,i,j)
+					#return team_select
+	#count = 0
+	# Kiểm tra cac cột
+	#for i in board[0].size():
+		#count = 0
+		#for j in board.size():
+			#if board[j][i] != team_select:
+				#count = 0
+			#else:
+				#count += 1
+				#if count == 3:
+					#prints("check",count,j,i)
+					#return team_select
+	#count = 0
+	
+	## Kiểm tra hàng và cột
+	#for i in range(map_size):
+		#if board[i][0] != 0 and board[i][0] == board[i][1] and board[i][0] == board[i][2]:
+			#return board[i][0] # Trả về giá trị của ô thắng
+		#if board[0][i] != 0 and board[0][i] == board[1][i] and board[0][i] == board[2][i]:
+			#return board[0][i] # Trả về giá trị của ô thắng
+	#
+	## Kiểm tra đường chéo chính
+	#if board[0][0] != 0 and board[0][0] == board[1][1] and board[0][0] == board[2][2]:
+		#return board[0][0] # Trả về giá trị của ô thắng
+	#
+	## Kiểm tra đường chéo phụ
+	#if board[0][2] != 0 and board[0][2] == board[1][1] and board[0][2] == board[2][0]:
+		#return board[0][2] # Trả về giá trị của ô thắng
+	#
+	# Nếu không có ô nào thắng
+	return 0
 
-func on_game_end():
-	pass
+func on_game_end(team_win:int = 1):
+	if team_win == 1:
+		prints("O win")
+	else:
+		prints("X win")
