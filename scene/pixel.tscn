@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckqp41lgbon50"]
+
+[ext_resource type="Texture2D" uid="uid://cwkkti00b62jm" path="res://2d/white_square.png" id="1_y6wln"]
+[ext_resource type="Texture2D" uid="uid://bhhjef5pbn624" path="res://2d/number_new.png" id="2_vnh7u"]
+
+[node name="Pixel" type="Sprite2D"]
+position = Vector2(32, 32)
+scale = Vector2(58, 58)
+texture = ExtResource("1_y6wln")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-0.2, 2.08165e-12)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_vnh7u")
+hframes = 6
+vframes = 3
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(0.2, 2.08165e-12)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_vnh7u")
+hframes = 6
+vframes = 3
+frame = 1

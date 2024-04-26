@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://eq1c7wdpq6f3"]
+
+[ext_resource type="Texture2D" uid="uid://bmko72mlyjmdo" path="res://2d/cross.png" id="1_fshi8"]
+[ext_resource type="Texture2D" uid="uid://bhhjef5pbn624" path="res://2d/number_new.png" id="2_ws2a6"]
+
+[node name="x" type="Sprite2D"]
+position = Vector2(32, 32)
+scale = Vector2(0.533333, 0.533333)
+texture = ExtResource("1_fshi8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-0.2, 2.08165e-12)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_ws2a6")
+hframes = 6
+vframes = 3
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(0.2, 2.08165e-12)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_ws2a6")
+hframes = 6
+vframes = 3
+frame = 1
