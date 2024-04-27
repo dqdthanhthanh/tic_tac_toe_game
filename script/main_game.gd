@@ -131,7 +131,7 @@ func on_game_end(team_win:int = 1):
 	else:
 		player_win.frame = 1
 		player_win.self_modulate = Color.RED
-	await get_tree().create_timer(0.5,false).timeout
+	await get_tree().create_timer(1,false).timeout
 	menu_new_game.show()
 
 func check_win() -> int:
