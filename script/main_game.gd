@@ -9,6 +9,8 @@ extends Control
 @export var move_label:Label
 
 # hien thi kieu danh dau x, o
+@export var pen_sfx:AudioStreamPlayer
+@export var marker_sfx:AudioStreamPlayer
 @export var marker_o:PackedScene
 @export var marker_x:PackedScene
 
@@ -56,7 +58,7 @@ func _ready() -> void:
 				pixel.modulate = Color.WHITE
 			else:
 				pixel.modulate = Color.BLACK
-	on_new_game()
+	on_new_game(false)
 
 func _input(event):
 	if event is InputEventMouseButton and game_end == false:
@@ -73,6 +75,7 @@ func add_marker(pos):
 	var y:int = (pos.y-$Board.position.y)/64
 	var node:Sprite2D = $Board.get_child(x+(y*board_data[0].size()))
 	if node.modulate == Color.WHITE and board_data[y][x] == 0:
+		pen_sfx.play()
 		all_moves += 1
 		move_label.text = "Moves: " + str(all_moves)
 		board_data[y][x] = team_select
@@ -104,7 +107,9 @@ func get_pixel(board_pos:Array) -> Sprite2D:
 	var pixel:Sprite2D = $Board.get_child(x+(y*board_data[0].size()))
 	return pixel
 
-func on_new_game():
+func on_new_game(sfx_active:bool = true):
+	if sfx_active == true:
+		pen_sfx.play()
 	team_select = 1
 	all_moves = 0
 	player_turn.frame = 0
@@ -124,6 +129,7 @@ func on_new_game():
 	game_end = false
 
 func on_game_end(team_win:int = 1):
+	marker_sfx.play()
 	game_end = true
 	if team_win == 1:
 		player_win.frame = 0

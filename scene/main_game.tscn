@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cfw0q4wew3l1o"]
+[gd_scene load_steps=13 format=3 uid="uid://cfw0q4wew3l1o"]
 
 [ext_resource type="Script" path="res://script/main_game.gd" id="1_ik6k0"]
 [ext_resource type="PackedScene" uid="uid://ckqp41lgbon50" path="res://scene/pixel.tscn" id="2_k6uj5"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cwkkti00b62jm" path="res://2d/white_square.png" id="5_tvhtv"]
 [ext_resource type="FontFile" uid="uid://cfnbrw8sdu01e" path="res://font/game_over.ttf" id="6_aubwr"]
 [ext_resource type="Texture2D" uid="uid://ckncqgaufxvuw" path="res://2d/xo.png" id="7_nxr2l"]
+[ext_resource type="AudioStream" uid="uid://b2cbag001w038" path="res://sound/pen.mp3" id="8_4ugcu"]
+[ext_resource type="AudioStream" uid="uid://5m2hcu5nqndf" path="res://sound/marker.mp3" id="8_8dv80"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp2yh"]
 bg_color = Color(1, 1, 1, 1)
@@ -32,7 +34,7 @@ border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0, 0, 1)
 
-[node name="MainGame" type="Control" node_paths=PackedStringArray("menu_new_game", "player_turn", "player_win", "move_label", "data")]
+[node name="MainGame" type="Control" node_paths=PackedStringArray("menu_new_game", "player_turn", "player_win", "move_label", "pen_sfx", "marker_sfx", "data")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,6 +47,8 @@ menu_new_game = NodePath("Panel/NewGame")
 player_turn = NodePath("Panel/PlayerTurnDisplay")
 player_win = NodePath("Panel/NewGame/PlayerWinDisplay")
 move_label = NodePath("Panel/Move")
+pen_sfx = NodePath("PenSfx")
+marker_sfx = NodePath("MarkerSfx")
 marker_o = ExtResource("3_ipbfh")
 marker_x = ExtResource("4_3ysp6")
 data = NodePath("Data")
@@ -184,3 +188,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Data" type="Node" parent="."]
+
+[node name="PenSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_4ugcu")
+volume_db = 10.0
+
+[node name="MarkerSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_8dv80")
+volume_db = 15.0
