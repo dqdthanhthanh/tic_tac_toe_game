@@ -1,12 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0t7mupielghb"]
 
-[ext_resource type="Texture2D" uid="uid://b5ie1fjtn3osx" path="res://2d/circle.png" id="1_yl5pv"]
+[ext_resource type="Texture2D" uid="uid://ckncqgaufxvuw" path="res://2d/xo.png" id="1_d807t"]
 [ext_resource type="Texture2D" uid="uid://bhhjef5pbn624" path="res://2d/number_new.png" id="2_qvmgj"]
 
 [node name="o" type="Sprite2D"]
+self_modulate = Color(0.146614, 0.640153, 0, 1)
 position = Vector2(32, 32)
-scale = Vector2(0.533333, 0.533333)
-texture = ExtResource("1_yl5pv")
+scale = Vector2(0.194529, 0.182336)
+texture = ExtResource("1_d807t")
+hframes = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(0, 0, 0, 1)

@@ -1,0 +1,186 @@
+[gd_scene load_steps=11 format=3 uid="uid://cfw0q4wew3l1o"]
+
+[ext_resource type="Script" path="res://script/main_game.gd" id="1_ik6k0"]
+[ext_resource type="PackedScene" uid="uid://ckqp41lgbon50" path="res://scene/pixel.tscn" id="2_k6uj5"]
+[ext_resource type="PackedScene" uid="uid://b0t7mupielghb" path="res://scene/o.tscn" id="3_ipbfh"]
+[ext_resource type="PackedScene" uid="uid://eq1c7wdpq6f3" path="res://scene/x.tscn" id="4_3ysp6"]
+[ext_resource type="Texture2D" uid="uid://cwkkti00b62jm" path="res://2d/white_square.png" id="5_tvhtv"]
+[ext_resource type="FontFile" uid="uid://cfnbrw8sdu01e" path="res://font/game_over.ttf" id="6_aubwr"]
+[ext_resource type="Texture2D" uid="uid://ckncqgaufxvuw" path="res://2d/xo.png" id="7_nxr2l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp2yh"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4d0y1"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgkjb"]
+bg_color = Color(0.560955, 0.560955, 0.560955, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="MainGame" type="Control" node_paths=PackedStringArray("menu_new_game", "player_turn", "player_win", "move_label", "data")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ik6k0")
+pixel_ins = ExtResource("2_k6uj5")
+menu_new_game = NodePath("Panel/NewGame")
+player_turn = NodePath("Panel/PlayerTurnDisplay")
+player_win = NodePath("Panel/NewGame/PlayerWinDisplay")
+move_label = NodePath("Panel/Move")
+marker_o = ExtResource("3_ipbfh")
+marker_x = ExtResource("4_3ysp6")
+data = NodePath("Data")
+
+[node name="BG" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(540, 360)
+scale = Vector2(1080, 720)
+texture = ExtResource("5_tvhtv")
+
+[node name="Board" type="Node2D" parent="."]
+position = Vector2(2.08165e-12, 40)
+
+[node name="Marker" type="Node2D" parent="."]
+position = Vector2(2.08165e-12, 40)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -408.0
+offset_top = -328.0
+offset_right = -32.0
+offset_bottom = 328.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dp2yh")
+
+[node name="PlayerTurn" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.0
+offset_top = 64.0
+offset_right = 105.0
+offset_bottom = 176.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_aubwr")
+theme_override_font_sizes/font_size = 100
+text = "Player Turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTurnDisplay" type="Sprite2D" parent="Panel"]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(184, 320)
+scale = Vector2(0.510638, 0.454416)
+texture = ExtResource("7_nxr2l")
+hframes = 2
+
+[node name="Move" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -200.0
+offset_right = 105.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_aubwr")
+theme_override_font_sizes/font_size = 100
+text = "Moves: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewGame" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -732.0
+offset_top = -160.0
+offset_right = -348.0
+offset_bottom = 152.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4d0y1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pgkjb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pgkjb")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_4d0y1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_4d0y1")
+
+[node name="Info" type="Label" parent="Panel/NewGame"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_aubwr")
+theme_override_font_sizes/font_size = 100
+text = "Winner"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerWinDisplay" type="Sprite2D" parent="Panel/NewGame"]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(200, 150)
+scale = Vector2(0.352584, 0.312678)
+texture = ExtResource("7_nxr2l")
+hframes = 2
+
+[node name="ClickToPlay" type="Label" parent="Panel/NewGame"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 20.0
+offset_right = 160.0
+offset_bottom = 132.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_aubwr")
+theme_override_font_sizes/font_size = 100
+text = "Click to play"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Data" type="Node" parent="."]
