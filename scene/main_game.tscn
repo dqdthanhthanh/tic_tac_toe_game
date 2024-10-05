@@ -137,11 +137,11 @@ offset_right = -348.0
 offset_bottom = 152.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4d0y1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_4d0y1")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_4d0y1")
 theme_override_styles/hover = SubResource("StyleBoxFlat_pgkjb")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pgkjb")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_4d0y1")
-theme_override_styles/focus = SubResource("StyleBoxFlat_4d0y1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4d0y1")
 
 [node name="Info" type="Label" parent="Panel/NewGame"]
 layout_mode = 1
